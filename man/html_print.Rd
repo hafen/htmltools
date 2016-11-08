@@ -4,11 +4,13 @@
 \alias{html_print}
 \title{Implementation of the print method for HTML}
 \usage{
-html_print(html, background = "white", viewer = getOption("viewer",
-  utils::browseURL))
+html_print(html, www_dir = NULL, background = "white",
+  viewer = getOption("viewer", utils::browseURL))
 }
 \arguments{
 \item{html}{HTML content to print}
+
+\item{www_dir}{temporary directory to print HTML output to (optional)}
 
 \item{background}{Background color for web page}
 

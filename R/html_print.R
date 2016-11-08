@@ -31,6 +31,7 @@ is.browsable <- function(x) {
 #' \code{\link[base:print]{print}} method for HTML content.
 #'
 #' @param html HTML content to print
+#' @param www_dir temporary directory to print HTML output to (optional)
 #' @param background Background color for web page
 #' @param viewer A function to be called with the URL or path to the generated
 #'   HTML page. Can be \code{NULL}, in which case no viewer will be invoked.
@@ -38,11 +39,17 @@ is.browsable <- function(x) {
 #' @return Invisibly returns the URL or path of the generated HTML page.
 #'
 #' @export
-html_print <- function(html, background = "white", viewer = getOption("viewer", utils::browseURL)) {
+html_print <- function(html, www_dir = NULL, background = "white", viewer = getOption("viewer", utils::browseURL)) {
 
   # define temporary directory for output
-  www_dir <- tempfile("viewhtml")
-  dir.create(www_dir)
+  if (is.null(www_dir)) {
+    www_dir <- tempfile("viewhtml")
+  } else if (dirname(tempfile()) != tempdir()) {
+    warning("html_print should be called with a path that is a subdirectory of tempdir().")
+  }
+
+  if (!dir.exists(www_dir))
+    dir.create(www_dir)
 
   # define output file
   index_html <- file.path(www_dir, "index.html")
